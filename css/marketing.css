@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap');
+
+:root {
+  --bg: #0a0a0c;
+  --text: #c8c4bc;
+  --text-dim: #7f7a72;
+  --text-bright: #e8e4dc;
+  --accent: #5d808d;
+  --accent-warm: #907564;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.85;
+  font-size: 1.15rem;
+  min-height: 100vh;
+}
+
+/* --- LAYOUT --- */
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section {
+  padding: 5rem 0;
+}
+
+section:not(.hero) {
+  opacity: 0;
+  animation: fadeIn 1.5s ease 3.5s forwards;
+}
+
+/* --- HERO --- */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.hero h1 {
+  font-weight: 300;
+  font-size: 3.5rem;
+  letter-spacing: 0.15em;
+  color: var(--text-bright);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 2s ease 0.3s forwards;
+}
+
+.hero .subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeIn 2s ease 1s forwards;
+}
+
+.hero .tagline {
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--accent-warm);
+  max-width: 480px;
+  opacity: 0;
+  animation: fadeIn 2s ease 1.8s forwards;
+}
+
+.hero .prize {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-top: 2.5rem;
+  opacity: 0;
+  animation: fadeIn 2s ease 2.5s forwards;
+}
+
+/* scroll-cue removed — not pulling its weight */
+
+/* --- ABOUT --- */
+
+.about p {
+  margin-bottom: 1.5rem;
+}
+
+.about p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- SECTION HEADINGS --- */
+
+.section-heading {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  font-size: 0.9rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 2.5rem;
+}
+
+/* --- BOOK METADATA --- */
+
+.book-meta {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.book-meta div {
+  padding-left: 1rem;
+  border-left: 1px solid var(--accent);
+}
+
+.book-meta dt {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
+}
+
+.book-meta dd {
+  font-size: 1.15rem;
+  color: var(--text-bright);
+}
+
+/* --- DETAILS + AUTHOR: tighter pair --- */
+
+.details {
+  padding-bottom: 2.5rem;
+}
+
+.author {
+  padding-top: 0;
+}
+
+/* --- SIGNUP --- */
+
+.signup-form {
+  display: flex;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.signup-form input[type="email"] {
+  flex: 1;
+  background: rgba(200, 196, 188, 0.05);
+  border: 1px solid var(--text-dim);
+  border-right: none;
+  border-radius: 2px 0 0 2px;
+  color: var(--text-bright);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 0.8rem 1.2rem;
+  letter-spacing: 0.03em;
+  outline: none;
+  transition: border-color 0.4s ease;
+}
+
+.signup-form input[type="email"]::placeholder {
+  color: var(--text-dim);
+}
+
+.signup-form input[type="email"]:focus {
+  border-color: var(--text);
+}
+
+.signup-form input[type="submit"] {
+  background: transparent;
+  border: 1px solid var(--text-dim);
+  border-radius: 0 2px 2px 0;
+  color: var(--text-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 0.8rem 1.6rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.signup-form input[type="submit"]:hover,
+.signup-form input[type="submit"]:focus {
+  border-color: var(--text);
+  color: var(--text);
+  background: rgba(200, 196, 188, 0.03);
+  outline: none;
+}
+
+.signup-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* --- FOOTER --- */
+
+footer {
+  padding: 3rem 0;
+  border-top: 1px solid rgba(127, 122, 114, 0.4);
+  opacity: 0;
+  animation: fadeIn 1.5s ease 3.5s forwards;
+}
+
+footer p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* --- LINKS --- */
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--text-bright);
+}
+
+/* --- ANIMATIONS --- */
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* --- RESPONSIVE --- */
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero .tagline {
+    font-size: 1.25rem;
+  }
+
+  .hero {
+    min-height: 80vh;
+  }
+
+  section {
+    padding: 3.5rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .book-meta {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .signup-form {
+    flex-direction: column;
+  }
+
+  .signup-form input[type="email"] {
+    border-right: 1px solid var(--text-dim);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .signup-form input[type="email"]:focus {
+    border-color: var(--text);
+  }
+
+  .signup-form input[type="submit"] {
+    border-radius: 0 0 2px 2px;
+    padding: 1rem 1.6rem;
+  }
+}
