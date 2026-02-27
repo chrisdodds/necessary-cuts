@@ -101,6 +101,73 @@ section:not(.hero) {
   animation: fadeIn 2s ease 2.5s forwards;
 }
 
+/* --- HERO SIGNUP --- */
+
+.hero-signup-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0;
+  animation: fadeIn 2s ease 3s forwards;
+}
+
+.hero-signup {
+  display: flex;
+  margin-top: 0;
+  opacity: 0;
+  animation: fadeIn 2s ease 3s forwards;
+}
+
+.hero-signup input[type="email"] {
+  background: rgba(200, 196, 188, 0.05);
+  border: 1px solid var(--text-dim);
+  border-right: none;
+  border-radius: 2px 0 0 2px;
+  color: var(--text-bright);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 300;
+  padding: 0.6rem 1rem;
+  letter-spacing: 0.03em;
+  outline: none;
+  width: 220px;
+  transition: border-color 0.4s ease;
+}
+
+.hero-signup input[type="email"]::placeholder {
+  color: var(--text-dim);
+}
+
+.hero-signup input[type="email"]:focus {
+  border-color: var(--text);
+}
+
+.hero-signup input[type="submit"] {
+  background: transparent;
+  border: 1px solid var(--text-dim);
+  border-radius: 0 2px 2px 0;
+  color: var(--text-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 300;
+  padding: 0.6rem 1.2rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.hero-signup input[type="submit"]:hover,
+.hero-signup input[type="submit"]:focus {
+  border-color: var(--text);
+  color: var(--text);
+  background: rgba(200, 196, 188, 0.03);
+  outline: none;
+}
+
 .scroll-cue {
   position: absolute;
   bottom: 2.5rem;
@@ -335,6 +402,27 @@ a:hover {
   .signup-form input[type="submit"] {
     border-radius: 0 0 2px 2px;
     padding: 1rem 1.6rem;
+  }
+
+  .hero-signup {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .hero-signup input[type="email"] {
+    width: 100%;
+    border-right: 1px solid var(--text-dim);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .hero-signup input[type="email"]:focus {
+    border-color: var(--text);
+  }
+
+  .hero-signup input[type="submit"] {
+    border-radius: 0 0 2px 2px;
+    padding: 0.8rem 1.2rem;
   }
 
   .scroll-cue {
