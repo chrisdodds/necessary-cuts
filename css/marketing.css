@@ -336,4 +336,8 @@ a:hover {
     border-radius: 0 0 2px 2px;
     padding: 1rem 1.6rem;
   }
+
+  .scroll-cue {
+    bottom: 1.5rem;
+  }
 }
