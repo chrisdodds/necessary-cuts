@@ -113,7 +113,7 @@ section:not(.hero) {
   text-decoration: none;
   color: var(--text-dim);
   opacity: 0;
-  animation: fadeIn 2s ease 3.5s forwards, pulse 4s ease-in-out 5s infinite;
+  animation: fadeIn 2s ease 4.5s forwards, pulse 4s ease-in-out 6.5s infinite;
   transition: color 0.3s ease;
 }
 
@@ -182,11 +182,12 @@ section:not(.hero) {
 /* --- DETAILS + AUTHOR: tighter pair --- */
 
 .details {
+  padding-top: 1.75rem;
   padding-bottom: 2.5rem;
 }
 
 .author {
-  padding-top: 0;
+  padding-top: 2.5rem;
 }
 
 /* --- SIGNUP --- */
