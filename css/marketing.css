@@ -25,7 +25,7 @@ body {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
   line-height: 1.85;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   min-height: 100vh;
 }
 
@@ -101,11 +101,38 @@ section:not(.hero) {
   animation: fadeIn 2s ease 2.5s forwards;
 }
 
-/* scroll-cue removed — not pulling its weight */
+.scroll-cue {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  opacity: 0;
+  animation: fadeIn 2s ease 3.5s forwards, pulse 4s ease-in-out 5s infinite;
+  transition: color 0.3s ease;
+}
+
+.scroll-cue:hover {
+  color: var(--text);
+}
+
+.scroll-cue span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
 
 /* --- ABOUT --- */
 
 .about p {
+  font-size: 1.3rem;
   margin-bottom: 1.5rem;
 }
 
