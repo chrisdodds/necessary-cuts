@@ -234,6 +234,7 @@ html, body {
   letter-spacing: 0.2em;
   color: var(--text-dim);
   text-transform: uppercase;
+  text-align: center;
   opacity: 0;
   animation: fadeIn 2s ease 1.5s forwards;
 }
