@@ -393,6 +393,7 @@ a:hover {
 
   .hero {
     min-height: 80vh;
+    padding-bottom: 5rem;
   }
 
   section {
