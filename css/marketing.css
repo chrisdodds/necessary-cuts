@@ -452,11 +452,8 @@ a:hover {
     bottom: auto;
     left: auto;
     transform: none;
-    margin-top: 2rem;
+    margin-top: auto;
+    padding-top: 2rem;
     padding-bottom: 0;
-  }
-
-  .hero {
-    padding-bottom: 2rem;
   }
 }
