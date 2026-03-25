@@ -23,12 +23,34 @@ const scenes = [
           { text: "You don't understand what the lake is saying. But it seems to want an answer.", class: "feeling" },
         ],
         choices: [
-          { text: "Tell it you'll miss the fish.", next: 'lake_try' },
-          { text: "Tell it you don't want to go.", next: 'lake_try' },
+          { text: "Tell it you'll miss the fish.", next: 'lake_fish' },
+          { text: "Tell it you don't want to go.", next: 'lake_leave' },
         ]
       }
     ],
     branches: {
+      lake_fish: {
+        beats: [
+          {
+            passages: [
+              { text: '"I\'ll miss the fish."', class: "spoken" },
+            ],
+            delay: 600,
+            then: 'lake_try'
+          }
+        ]
+      },
+      lake_leave: {
+        beats: [
+          {
+            passages: [
+              { text: '"I don\'t want to go."', class: "spoken" },
+            ],
+            delay: 600,
+            then: 'lake_try'
+          }
+        ]
+      },
       lake_try: {
         beats: [
           {
@@ -56,7 +78,7 @@ const scenes = [
               { text: "The lake sighs like a screen door closing, and the clicking softens.", class: "" },
               { text: "The crickets and frogs come back louder. You want to put their sound in a jar to take with you.", class: "" },
             ],
-            delay: 8000,
+            delay: 5000,
             then: 'next_scene'
           }
         ]
@@ -178,7 +200,7 @@ const scenes = [
           {
             passages: [
               { text: '"Where did you come from?"', class: "spoken" },
-              { text: "The hum deepens. It doesn't answer. Doesn't need to.", class: "" },
+              { text: "The hum deepens. It doesn't answer.", class: "" },
               { text: "You squeeze it tight. The tears come. You don't try to stop them this time.", class: "" },
             ],
             delay: 1200,
@@ -206,7 +228,7 @@ const scenes = [
               { text: "You relax your grip a little and feel your breath slowing down.", class: "" },
               { text: "It nestles closer.", class: "whisper" },
             ],
-            delay: 8000,
+            delay: 5000,
             then: 'next_scene'
           }
         ]
@@ -235,7 +257,7 @@ const scenes = [
       {
         passages: [
           { text: "When you start driving away, a lady with brown skin and a purple crayon dress steps into the road and waves.", class: "" },
-          { text: "She gives you a sweet potato pie. It's the best thing you've ever tasted—sugary and creamy—nothing at all like a potato.", class: "" },
+          { text: "She gives you a slice of sweet potato pie. It's the best thing you've ever tasted—sugary and creamy—nothing at all like a potato.", class: "" },
           { text: "Something in you changes as you eat it.", class: "feeling" },
         ],
         delay: 800
@@ -249,9 +271,8 @@ const scenes = [
       {
         passages: [],
         choices: [
-          { text: "You say: turn around.", next: 'depart_resist' },
-          { text: "You say: I don't want to go.", next: 'depart_home' },
-          { text: "You press into her.", next: 'depart_close' },
+          { text: "Say: turn around.", next: 'depart_resist' },
+          { text: "Press into her.", next: 'depart_close' },
         ]
       }
     ],
@@ -264,20 +285,6 @@ const scenes = [
               { text: "Mom is quiet for a long time.", class: "" },
               { text: '"I know, baby. I don\'t want to either."', class: "spoken" },
               { text: "She doesn't turn around.", class: "" },
-              { text: "Her arm around you is firm, but the rest of her is shaking.", class: "" },
-            ],
-            delay: 1000,
-            then: 'depart_trailer'
-          }
-        ]
-      },
-      depart_home: {
-        beats: [
-          {
-            passages: [
-              { text: '"I don\'t want to go," you say.', class: "spoken" },
-              { text: "Mom squeezes you.", class: "" },
-              { text: '"I know, baby. I don\'t want to either."', class: "spoken" },
               { text: "Her arm around you is firm, but the rest of her is shaking.", class: "" },
             ],
             delay: 1000,
@@ -320,7 +327,7 @@ const scenes = [
             passages: [
               { text: "Behind you, the lake gets smaller and smaller until it's swallowed between the dirt and sky.", class: "" },
             ],
-            delay: 8000,
+            delay: 5000,
             then: 'ending'
           }
         ]

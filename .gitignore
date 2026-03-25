@@ -3,3 +3,4 @@
 *.flac
 *.wav
 CLAUDE.md
+.claude/

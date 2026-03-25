@@ -6,6 +6,20 @@
 <title>Play — Necessary Cuts</title>
 <meta name="description" content="An interactive fragment from Necessary Cuts by Chris Dodds.">
 <link rel="canonical" href="https://necessarycuts.com/play">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Play — Necessary Cuts">
+<meta property="og:description" content="A second-person interactive fragment from Necessary Cuts by Chris Dodds.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://necessarycuts.com/play">
+<meta property="og:image" content="https://necessarycuts.com/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Play — Necessary Cuts">
+<meta name="twitter:description" content="A second-person interactive fragment from Necessary Cuts by Chris Dodds.">
+<meta name="twitter:image" content="https://necessarycuts.com/og-image.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0c'/><text x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23e8e4dc'>NC</text></svg>">
 <link rel="stylesheet" href="css/marketing.css">
 <link rel="stylesheet" href="css/game.css">
 </head>
@@ -17,7 +31,7 @@
 <div id="title-screen">
   <h1>Necessary Cuts</h1>
   <div class="subtitle">a second-person interactive fragment</div>
-  <div class="headphones-note">headphones recommended</div>
+  <div class="headphones-note">sound shapes the experience</div>
   <div class="start-prompt">click anywhere to begin</div>
 </div>
 
@@ -28,12 +42,16 @@
 </div>
 
 <div id="sound-hint">
-  <div class="speaker-icon">
-    <div class="speaker-body"></div>
-    <div class="speaker-wave wave1"></div>
-    <div class="speaker-wave wave2"></div>
-    <div class="speaker-slash"></div>
-  </div>
+  <svg class="speaker-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+    <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+    <path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+  </svg>
+  <svg class="speaker-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
 </div>
 
 <script src="js/audio-engine.js"></script>

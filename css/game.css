@@ -39,7 +39,7 @@ html, body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 65%);
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 55%, transparent 85%);
   pointer-events: none;
   z-index: 0;
 }
@@ -59,8 +59,6 @@ html, body {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
 }
 
 #narrative::-webkit-scrollbar { display: none; }
@@ -73,7 +71,7 @@ html, body {
   letter-spacing: 0.01em;
   opacity: 0;
   animation: fadeIn 1.2s ease forwards;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7), 0 2px 12px rgba(0,0,0,0.4);
 }
 
 .passage.dim {
@@ -107,10 +105,32 @@ html, body {
   font-style: italic;
 }
 
+/* --- CONTINUE GLYPH --- */
+
+.continue-glyph {
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.8rem;
+  letter-spacing: 0.4em;
+  color: var(--text);
+  padding-top: 0.5rem;
+}
+
+.continue-glyph span {
+  display: inline-block;
+  opacity: 0;
+  animation: dotwave 2.4s ease-in-out infinite;
+}
+
+@keyframes dotwave {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
 /* --- CHOICES --- */
 #choices {
   max-width: 640px;
-  margin: 0 auto;
+  margin: 1.5rem auto 0;
   padding: 0 2rem;
   width: 100%;
   display: flex;
@@ -146,12 +166,24 @@ html, body {
   background: rgba(200, 196, 188, 0.06);
 }
 
-.choice.selected {
-  border-color: var(--accent);
-  color: var(--accent);
+.choice.unchosen {
+  opacity: 0;
+  transition: opacity 0.5s ease;
   pointer-events: none;
-  opacity: 0.5;
 }
+
+.choice.chosen {
+  color: var(--text-bright);
+  border-color: var(--text-bright);
+  pointer-events: none;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.choice.chosen-fade {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
 
 /* --- SCENE TRANSITIONS --- */
 #scene-overlay {
@@ -228,7 +260,7 @@ html, body {
   position: absolute;
   bottom: 10vh;
   opacity: 0;
-  animation: fadeIn 2s ease 4s forwards, pulse 3s ease-in-out 6s infinite;
+  animation: fadeIn 2s ease 4s forwards, pulse 5s ease 6s infinite;
 }
 
 #title-screen.hiding {
@@ -246,82 +278,14 @@ html, body {
   opacity: 0.4;
   cursor: pointer;
   transition: opacity 0.3s;
+  color: var(--text-dim);
 }
 
 #sound-hint:hover { opacity: 0.8; }
 
-.speaker-icon {
-  position: relative;
-  width: 22px;
-  height: 22px;
-}
-
-.speaker-body {
-  position: absolute;
-  left: 2px;
-  top: 6px;
-  width: 6px;
-  height: 10px;
-  background: var(--text-dim);
-  border-radius: 1px;
-}
-
-.speaker-body::before {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: -3px;
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-left: 8px solid var(--text-dim);
-}
-
-.speaker-wave {
-  position: absolute;
-  right: 1px;
-  top: 50%;
-  border: 1.5px solid var(--text-dim);
-  border-left: none;
-  border-radius: 0 50% 50% 0;
-  transition: opacity 0.3s;
-}
-
-.speaker-wave.wave1 {
-  width: 4px;
-  height: 8px;
-  margin-top: -4px;
-  right: 4px;
-}
-
-.speaker-wave.wave2 {
-  width: 6px;
-  height: 14px;
-  margin-top: -7px;
-  right: 0;
-}
-
-.speaker-slash {
-  position: absolute;
-  top: 1px;
-  left: 50%;
-  width: 2px;
-  height: 20px;
-  background: var(--text-dim);
-  transform: rotate(-45deg);
-  transform-origin: center;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-#sound-hint.muted .speaker-wave {
-  opacity: 0;
-}
-
-#sound-hint.muted .speaker-slash {
-  opacity: 1;
-}
+#sound-hint .speaker-off { display: none; }
+#sound-hint.muted .speaker-on { display: none; }
+#sound-hint.muted .speaker-off { display: block; }
 
 /* --- SCENE LABEL --- */
 .scene-label {
@@ -370,12 +334,32 @@ html, body {
   color: var(--text-bright);
 }
 
+.replay-link-delayed {
+  animation-delay: 0.8s;
+}
+
 /* --- RESPONSIVE --- */
 @media (max-width: 600px) {
   .passage { font-size: 1.2rem; line-height: 1.75; }
   .passage.spoken { font-size: 0.95rem; }
   .choice { font-size: 0.9rem; padding: 1rem 1.2rem; min-height: 48px; }
   #title-screen h1 { font-size: 2rem; }
-  #narrative { padding: 0 1.5rem; }
+  #game { padding-top: 6rem; }
+  #narrative {
+    padding: 0 1.5rem;
+    max-height: calc(100vh - 6rem - 12vh - 14rem);
+  }
   #choices { padding: 0 1.5rem; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  #game { padding-top: 4rem; padding-bottom: 6vh; }
+  #narrative {
+    padding: 0 1.5rem;
+    max-height: calc(100vh - 4rem - 6vh - 9rem);
+  }
+  .passage { font-size: 1rem; line-height: 1.6; margin-bottom: 1.2rem; }
+  .choice { font-size: 0.85rem; padding: 0.6rem 1rem; min-height: 40px; }
+  #choices { padding: 0 1.5rem; }
+  #title-screen h1 { font-size: 1.8rem; }
 }

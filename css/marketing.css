@@ -76,9 +76,20 @@ section:not(.hero) {
   letter-spacing: 0.2em;
   color: var(--text-dim);
   text-transform: uppercase;
-  margin-bottom: 3rem;
+  margin-bottom: 0.4rem;
   opacity: 0;
   animation: fadeIn 1.5s ease 1.1s forwards;
+}
+
+.hero .prize {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeIn 1.5s ease 1.4s forwards;
 }
 
 .hero .tagline {
@@ -100,7 +111,7 @@ section:not(.hero) {
   letter-spacing: 0.1em;
   color: var(--text-dim);
   text-decoration: none;
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   opacity: 0;
   animation: fadeIn 1.5s ease 3.2s forwards;
   transition: color 0.3s ease;
@@ -149,6 +160,7 @@ section:not(.hero) {
 
 .hero-signup input[type="email"]::placeholder {
   color: var(--text-dim);
+  text-align: center;
 }
 
 .hero-signup input[type="email"]:focus {
@@ -189,7 +201,7 @@ section:not(.hero) {
   text-decoration: none;
   color: var(--text-dim);
   opacity: 0;
-  animation: fadeIn 1.5s ease 3.9s forwards, pulse 3s ease-in-out 5.5s infinite;
+  animation: fadeIn 1.5s ease 3.9s forwards, pulse 5s ease 5.5s infinite;
   transition: color 0.3s ease;
 }
 
@@ -292,6 +304,7 @@ section:not(.hero) {
 
 .signup-form input[type="email"]::placeholder {
   color: var(--text-dim);
+  text-align: center;
 }
 
 .signup-form input[type="email"]:focus {

@@ -72,12 +72,14 @@ function showChoices(choices, container) {
       btn.textContent = c.text;
       btn.addEventListener('click', () => {
         container.querySelectorAll('.choice').forEach(b => {
-          if (b !== btn) b.classList.add('selected');
+          b.classList.add(b === btn ? 'chosen' : 'unchosen');
         });
-
         setTimeout(() => {
-          clearEl(container);
-          resolve(c.next);
+          btn.classList.add('chosen-fade');
+          setTimeout(() => {
+            clearEl(container);
+            resolve(c.next);
+          }, 900);
         }, 600);
       });
       container.appendChild(btn);
@@ -95,8 +97,23 @@ function dimOlderPassages() {
 }
 
 function scrollToBottom() {
-  narrativeEl.scrollTop = narrativeEl.scrollHeight;
+  narrativeEl.scrollTo({ top: narrativeEl.scrollHeight, behavior: 'smooth' });
 }
+
+function showContinueGlyph() {
+  clearEl(choicesEl);
+  const glyph = document.createElement('div');
+  glyph.className = 'continue-glyph';
+  ['·', '·', '·'].forEach((dot, i) => {
+    const span = document.createElement('span');
+    span.textContent = dot;
+    span.style.animationDelay = `${1.5 + i * 0.4}s`;
+    glyph.appendChild(span);
+  });
+  narrativeEl.appendChild(glyph);
+  scrollToBottom();
+}
+
 
 function wait(ms) {
   return new Promise(r => setTimeout(r, ms));
@@ -195,7 +212,6 @@ function startSceneAudio(sceneName) {
     } else {
       boneTicker = audio.createBoneTicks();
     }
-    activeSounds.boneTicker = boneTicker;
 
   } else if (sceneName === 'morning') {
     if (soundBuffers.wind) {
@@ -217,8 +233,8 @@ function startSceneAudio(sceneName) {
   }
 }
 
-function stopAllAudio() {
-  const fadeAndStop = (sound, fadeDuration = 2) => {
+function stopAllAudio(fadeDuration = 2) {
+  const fadeAndStop = (sound) => {
     if (!sound) return;
     if (sound.gain) audio.fadeOut(sound.gain, fadeDuration);
     if (sound.source) {
@@ -259,16 +275,17 @@ async function playBeats(beats, scene) {
     }
 
     if (scene.label === 'departure') {
-      if (activeSounds.gravel && beat.passages.some(p => p.text.includes('grip your shirt'))) {
-        audio.fadeIn(activeSounds.gravel.gain, 0.35, 4);
+      if (activeSounds.gravel && beat.passages.some(p => p.text.includes('Behind you'))) {
+        audio.fadeIn(activeSounds.gravel.gain, 0.35, 6);
       }
     }
 
     if (scene.label === 'the bedroom') {
       if (boneTicker && beat.passages.some(p => p.text.includes('tick-tick'))) {
-        boneTicker.tick();
-        setTimeout(() => boneTicker.tick(), 300);
-        setTimeout(() => boneTicker.tick(), 700);
+        const ticker = boneTicker;
+        ticker.tick();
+        setTimeout(() => ticker && ticker.tick(), 300);
+        setTimeout(() => ticker && ticker.tick(), 700);
       }
       if (boneTicker && beat.passages.some(p => p.text.includes('hums'))) {
         if (activeSounds.hum) audio.fadeIn(activeSounds.hum.gain, 0.15, 2);
@@ -277,19 +294,22 @@ async function playBeats(beats, scene) {
 
     if (beat.choices) {
       const chosen = await showChoices(beat.choices, choicesEl);
+      await wait(400);
       if (scene.branches[chosen]) {
         await playBeats(scene.branches[chosen].beats, scene);
         return;
       }
     } else if (beat.then === 'next_scene') {
+      showContinueGlyph();
       await wait(beat.delay || 1000);
       await transitionToNextScene();
       return;
     } else if (beat.then === 'ending') {
-      // Fade canvas to black over the delay so the scene darkens while the last line lingers
+      // Fade canvas and audio together over the full delay
       const fadeDuration = (beat.delay || 1000) - 500;
       canvas.style.transition = `opacity ${fadeDuration / 1000}s ease`;
       canvas.style.opacity = '0';
+      stopAllAudio(fadeDuration / 1000);
       await wait(beat.delay || 1000);
       await showEnding();
       return;
@@ -310,7 +330,7 @@ async function transitionToNextScene() {
   const overlay = document.getElementById('scene-overlay');
   overlay.classList.add('active');
   stopAllAudio();
-  await wait(2000);
+  await wait(1600);  // overlay fully opaque
 
   currentScene++;
   clearEl(narrativeEl);
@@ -318,15 +338,16 @@ async function transitionToNextScene() {
 
   if (currentScene < scenes.length) {
     const scene = scenes[currentScene];
-    startCanvasTransition(scene.ambient, 3000);
+    // Switch canvas while fully covered, then reveal
+    startCanvasTransition(scene.ambient, 800);
     createParticles(scene.ambient);
     sceneLabelEl.textContent = scene.label;
     animateSceneLabel();
-
     startSceneAudio(scene.ambient);
 
+    await wait(900);  // canvas transition finishes before overlay lifts
     overlay.classList.remove('active');
-    await wait(1500);
+    await wait(1800);
     await playBeats(scene.beats, scene);
   }
 }
@@ -351,11 +372,19 @@ async function showEnding() {
   sceneLabelEl.textContent = '';
 
   overlay.classList.remove('active');
-  await wait(1200);
+  await wait(1800);
 
-  // Links appear first
+  // Center everything in the viewport
+  narrativeEl.style.cssText = 'display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;max-height:none;overflow:visible;';
+
+  await appendEndingEl('passage end-text', 'Necessary Cuts', 80, { textAlign: 'center' });
+  await wait(800);
+  await appendEndingEl('passage end-text whisper', 'Chris Dodds', 60, { textAlign: 'center' });
+  await wait(2000);
+
+  // Links fade in after
   const endLinks = document.createElement('div');
-  endLinks.style.cssText = 'margin-top:30vh;display:flex;flex-direction:column;align-items:center;gap:1.2rem;';
+  endLinks.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:1.2rem;margin-top:2.5rem;';
   narrativeEl.appendChild(endLinks);
 
   const signup = document.createElement('a');
@@ -365,49 +394,13 @@ async function showEnding() {
   signup.style.letterSpacing = '0.12em';
   endLinks.appendChild(signup);
 
-  const replay = document.createElement('button');
-  replay.className = 'replay-link';
-  replay.textContent = 'begin again';
-  replay.style.opacity = '0';
-  replay.style.animationDelay = '0.8s';
-  replay.addEventListener('click', restartGame);
-  endLinks.appendChild(replay);
-
-  await wait(2500);
-
-  // Credits type in below
-  await appendEndingEl('passage end-text', 'Necessary Cuts', 80, { textAlign: 'center', marginTop: '3rem' });
-  await wait(1000);
-  await appendEndingEl('passage end-text whisper', 'Chris Dodds', 60, { textAlign: 'center' });
-  await wait(1500);
+  const returnLink = document.createElement('a');
+  returnLink.className = 'replay-link replay-link-delayed';
+  returnLink.href = '/';
+  returnLink.textContent = '← return';
+  endLinks.appendChild(returnLink);
 }
 
-async function restartGame() {
-  const overlay = document.getElementById('scene-overlay');
-  overlay.classList.add('active');
-  await wait(1500);
-
-  currentScene = 0;
-  stopAllAudio();
-  canvasTransition = { active: false, fromMode: null, toMode: null, progress: 0, duration: 0, startTime: 0 };
-
-  clearEl(narrativeEl);
-  clearEl(choicesEl);
-
-  canvas.style.transition = 'none';
-  canvas.style.opacity = '';
-
-  const scene = scenes[0];
-  sceneLabelEl.textContent = scene.label;
-  animateSceneLabel();
-  ambientMode = scene.ambient;
-  createParticles(ambientMode);
-  startSceneAudio(scene.ambient);
-
-  overlay.classList.remove('active');
-  await wait(1000);
-  await playBeats(scene.beats, scene);
-}
 
 let gameStarted = false;
 document.getElementById('title-screen').addEventListener('click', async () => {
