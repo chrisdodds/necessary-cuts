@@ -393,7 +393,6 @@ a:hover {
 
   .hero {
     min-height: 80vh;
-    padding-bottom: 7rem;
   }
 
   section {
@@ -449,6 +448,15 @@ a:hover {
   }
 
   .scroll-cue {
-    bottom: 1.5rem;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 2rem;
+    padding-bottom: 0;
+  }
+
+  .hero {
+    padding-bottom: 2rem;
   }
 }
