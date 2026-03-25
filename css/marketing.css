@@ -392,7 +392,9 @@ a:hover {
   }
 
   .hero {
-    min-height: 80vh;
+    min-height: 100vh;
+    min-height: 100svh;
+    justify-content: flex-start;
   }
 
   section {
