@@ -6,25 +6,26 @@ let ambientMode = 'lake';
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  if (particles.length) createParticles(ambientMode);
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
 const sceneGradients = {
   lake: [
-    { stop: 0, color: [13, 17, 23] },
+    { stop: 0,   color: [13, 17, 23] },
     { stop: 0.5, color: [15, 26, 36] },
-    { stop: 1, color: [10, 21, 32] }
+    { stop: 1,   color: [10, 21, 32] }
   ],
   bedroom: [
-    { stop: 0, color: [22, 22, 38] },
+    { stop: 0,   color: [22, 22, 38] },
     { stop: 0.5, color: [16, 16, 28] },
-    { stop: 1, color: [10, 10, 18] }
+    { stop: 1,   color: [10, 10, 18] }
   ],
   morning: [
-    { stop: 0, color: [120, 90, 52] },
-    { stop: 0.4, color: [80, 60, 36] },
-    { stop: 1, color: [28, 24, 26] }
+    { stop: 0,   color: [120, 90, 52] },
+    { stop: 0.4, color: [80,  60, 36] },
+    { stop: 1,   color: [28,  24, 26] }
   ]
 };
 
@@ -41,9 +42,9 @@ function startCanvasTransition(toMode, duration) {
   canvasTransition = {
     active: true,
     fromMode: ambientMode,
-    toMode: toMode,
+    toMode,
     progress: 0,
-    duration: duration,
+    duration,
     startTime: performance.now()
   };
 }
@@ -69,6 +70,7 @@ function sampleGradientAt(stops, position) {
       return lerpColor(stops[i].color, stops[i + 1].color, t);
     }
   }
+  return stops[stops.length - 1].color;
 }
 
 function drawInterpolatedGradient(fromMode, toMode, t) {
@@ -79,8 +81,7 @@ function drawInterpolatedGradient(fromMode, toMode, t) {
   for (const pos of samplePoints) {
     const fromColor = sampleGradientAt(fromStops, pos);
     const toColor = sampleGradientAt(toStops, pos);
-    const blended = lerpColor(fromColor, toColor, t);
-    grd.addColorStop(pos, rgbToHex(blended));
+    grd.addColorStop(pos, rgbToHex(lerpColor(fromColor, toColor, t)));
   }
   canvasCtx.fillStyle = grd;
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
@@ -90,12 +91,11 @@ function drawSceneOverlay(mode, alpha) {
   if (alpha <= 0) return;
 
   if (mode === 'lake') {
-    // Moon with glow — fixed position, clear of scene label
     const mx = canvas.width * 0.55, my = 160;
     const glow = canvasCtx.createRadialGradient(mx, my, 20, mx, my, 110);
-    glow.addColorStop(0, `rgba(212, 208, 200, ${0.3 * alpha})`);
+    glow.addColorStop(0,   `rgba(212, 208, 200, ${0.30 * alpha})`);
     glow.addColorStop(0.3, `rgba(190, 200, 215, ${0.08 * alpha})`);
-    glow.addColorStop(1, 'rgba(180, 190, 210, 0)');
+    glow.addColorStop(1,   'rgba(180, 190, 210, 0)');
     canvasCtx.fillStyle = glow;
     canvasCtx.fillRect(mx - 110, my - 110, 220, 220);
     canvasCtx.beginPath();
@@ -104,7 +104,6 @@ function drawSceneOverlay(mode, alpha) {
     canvasCtx.fill();
 
   } else if (mode === 'bedroom') {
-    // Diffuse moon glow — centered, floods upper room with soft blue-white ambient light
     const gx = canvas.width * 0.5, gy = 0;
     const glow = canvasCtx.createRadialGradient(gx, gy, 0, gx, gy, canvas.height * 0.9);
     glow.addColorStop(0,    `rgba(185, 200, 230, ${0.35 * alpha})`);
@@ -116,13 +115,12 @@ function drawSceneOverlay(mode, alpha) {
     canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 
   } else if (mode === 'morning') {
-    // Warm horizon glow spread across the top
     const hx = canvas.width * 0.5, hy = 0;
     const horizon = canvasCtx.createRadialGradient(hx, hy, 0, hx, hy, canvas.height * 0.8);
-    horizon.addColorStop(0, `rgba(220, 170, 100, ${0.65 * alpha})`);
-    horizon.addColorStop(0.25, `rgba(200, 150, 80, ${0.35 * alpha})`);
-    horizon.addColorStop(0.55, `rgba(180, 125, 60, ${0.12 * alpha})`);
-    horizon.addColorStop(1, 'rgba(160, 110, 50, 0)');
+    horizon.addColorStop(0,    `rgba(220, 170, 100, ${0.65 * alpha})`);
+    horizon.addColorStop(0.25, `rgba(200, 150,  80, ${0.35 * alpha})`);
+    horizon.addColorStop(0.55, `rgba(180, 125,  60, ${0.12 * alpha})`);
+    horizon.addColorStop(1,    'rgba(160, 110, 50, 0)');
     canvasCtx.fillStyle = horizon;
     canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
   }
@@ -140,7 +138,7 @@ function createParticles(mode) {
         speedY: (Math.random() - 0.5) * 0.1,
         opacity: Math.random() * 0.3,
         pulse: Math.random() * Math.PI * 2,
-        color: `rgba(170, 190, 210, `
+        rgb: [170, 190, 210]
       });
     }
     for (let i = 0; i < 8; i++) {
@@ -152,7 +150,7 @@ function createParticles(mode) {
         speedY: 0,
         opacity: 0.1 + Math.random() * 0.15,
         pulse: Math.random() * Math.PI * 2,
-        color: `rgba(212, 208, 200, `
+        rgb: [212, 208, 200]
       });
     }
   } else if (mode === 'bedroom') {
@@ -165,7 +163,7 @@ function createParticles(mode) {
         speedY: -0.05 - Math.random() * 0.1,
         opacity: 0.1 + Math.random() * 0.3,
         pulse: Math.random() * Math.PI * 2,
-        color: `rgba(200, 196, 188, `
+        rgb: [200, 196, 188]
       });
     }
   } else if (mode === 'morning') {
@@ -178,9 +176,31 @@ function createParticles(mode) {
         speedY: 0.05 + Math.random() * 0.1,
         opacity: 0.1 + Math.random() * 0.25,
         pulse: Math.random() * Math.PI * 2,
-        color: `rgba(200, 180, 140, `
+        rgb: [200, 180, 140]
       });
     }
+  }
+}
+
+function updateParticles() {
+  for (const p of particles) {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.pulse += 0.02;
+    if (p.x < -10) p.x = canvas.width + 10;
+    if (p.x > canvas.width + 10) p.x = -10;
+    if (p.y < -10) p.y = canvas.height + 10;
+    if (p.y > canvas.height + 10) p.y = -10;
+  }
+}
+
+function drawParticles() {
+  for (const p of particles) {
+    const alpha = p.opacity * (Math.sin(p.pulse) * 0.5 + 0.5);
+    canvasCtx.beginPath();
+    canvasCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    canvasCtx.fillStyle = `rgba(${p.rgb[0]}, ${p.rgb[1]}, ${p.rgb[2]}, ${alpha})`;
+    canvasCtx.fill();
   }
 }
 
@@ -207,24 +227,8 @@ function drawAmbient() {
     drawSceneOverlay(ambientMode, 1);
   }
 
-  for (const p of particles) {
-    p.x += p.speedX;
-    p.y += p.speedY;
-    p.pulse += 0.02;
-
-    const osc = Math.sin(p.pulse) * 0.5 + 0.5;
-    const alpha = p.opacity * osc;
-
-    canvasCtx.beginPath();
-    canvasCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    canvasCtx.fillStyle = p.color + alpha + ')';
-    canvasCtx.fill();
-
-    if (p.x < -10) p.x = canvas.width + 10;
-    if (p.x > canvas.width + 10) p.x = -10;
-    if (p.y < -10) p.y = canvas.height + 10;
-    if (p.y > canvas.height + 10) p.y = -10;
-  }
+  updateParticles();
+  drawParticles();
 
   requestAnimationFrame(drawAmbient);
 }
