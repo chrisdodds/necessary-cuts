@@ -71,6 +71,7 @@ function showChoices(choices, container) {
       btn.className = 'choice';
       btn.textContent = c.text;
       btn.addEventListener('click', () => {
+        btn.classList.add('tapped');
         container.querySelectorAll('.choice').forEach(b => {
           b.classList.add(b === btn ? 'chosen' : 'unchosen');
         });
@@ -408,6 +409,7 @@ document.getElementById('title-screen').addEventListener('click', async () => {
   gameStarted = true;
 
   audio.init();
+  await audio.ctx.resume();
   const preloadPromise = preloadSounds();
 
   const titleScreen = document.getElementById('title-screen');

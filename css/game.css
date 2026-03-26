@@ -155,15 +155,27 @@ html, body {
   border-radius: 2px;
 }
 
-.choice:hover {
-  border-color: var(--text);
-  color: var(--text);
-  padding-left: 1.6rem;
-  background: rgba(200, 196, 188, 0.03);
+@media (hover: hover) {
+  .choice:hover {
+    border-color: var(--text);
+    color: var(--text);
+    padding-left: 1.6rem;
+    background: rgba(200, 196, 188, 0.03);
+  }
 }
 
 .choice:active {
   background: rgba(200, 196, 188, 0.06);
+}
+
+.choice.tapped {
+  animation: choicePulse 0.3s ease forwards;
+}
+
+@keyframes choicePulse {
+  0%   { transform: scale(1);    background: transparent; }
+  40%  { transform: scale(1.02); background: rgba(200, 196, 188, 0.08); border-color: var(--text); }
+  100% { transform: scale(1);    background: transparent; }
 }
 
 .choice.unchosen {
@@ -175,13 +187,13 @@ html, body {
 .choice.chosen {
   color: var(--text-bright);
   border-color: var(--text-bright);
+  opacity: 1;
   pointer-events: none;
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition: color 0.3s ease, border-color 0.3s ease, opacity 0.8s ease;
 }
 
 .choice.chosen-fade {
   opacity: 0;
-  transition: opacity 0.8s ease;
 }
 
 
