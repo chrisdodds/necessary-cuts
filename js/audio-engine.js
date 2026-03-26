@@ -10,10 +10,6 @@ class AudioEngine {
     if (this.initialized) return;
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.ctx.resume();
-    const unlock = this.ctx.createBufferSource();
-    unlock.buffer = this.ctx.createBuffer(1, 1, this.ctx.sampleRate);
-    unlock.connect(this.ctx.destination);
-    unlock.start(0);
     this.masterGain = this.ctx.createGain();
     this.masterGain.gain.value = 0.3;
     this.masterGain.connect(this.ctx.destination);

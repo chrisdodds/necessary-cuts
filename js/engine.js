@@ -10,12 +10,12 @@ let boneTicker = null;
 async function preloadSounds() {
   if (!audio.initialized) return;
   const files = {
-    water: 'audio/water.m4a',
-    crickets: 'audio/crickets.m4a',
-    wind: 'audio/wind.m4a',
-    hum: 'audio/hum.m4a',
-    boneClick: 'audio/bone-click.m4a',
-    gravel: 'audio/gravel.m4a'
+    water: 'audio/water.mp3',
+    crickets: 'audio/crickets.mp3',
+    wind: 'audio/wind.mp3',
+    hum: 'audio/hum.mp3',
+    boneClick: 'audio/bone-click.mp3',
+    gravel: 'audio/gravel.mp3'
   };
   const entries = Object.entries(files);
   const results = await Promise.allSettled(
