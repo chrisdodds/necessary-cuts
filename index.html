@@ -131,15 +131,11 @@ document.querySelectorAll('form').forEach(function(form) {
     fetch('https://buttondown.com/api/emails/embed-subscribe/chrisdodds', {
       method: 'POST',
       body: data,
-      headers: { 'Accept': 'application/json' }
-    }).then(function(res) {
+      mode: 'no-cors'
+    }).then(function() {
       var msg = document.createElement('p');
       msg.className = 'signup-confirm';
-      if (res.ok || res.status === 302) {
-        msg.textContent = 'You\'re on the list. I\'ll be in touch when there\'s something worth sharing.';
-      } else {
-        msg.textContent = 'Something went wrong. Try again or email me directly.';
-      }
+      msg.textContent = 'You\'re on the list. I\'ll be in touch when there\'s something worth sharing.';
       form.replaceWith(msg);
     }).catch(function() {
       var msg = document.createElement('p');
