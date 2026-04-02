@@ -340,6 +340,14 @@ section:not(.hero) {
   letter-spacing: 0.05em;
 }
 
+.signup-confirm {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
 /* --- FOOTER --- */
 
 footer {
