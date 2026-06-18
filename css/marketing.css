@@ -3,9 +3,10 @@
 :root {
   --bg: #0a0a0c;
   --text: #c8c4bc;
-  --text-dim: #7f7a72;
+  --text-dim: #948f86;       /* lightened from #7f7a72 for AA contrast on small mono text */
   --text-bright: #e8e4dc;
   --accent: #5d808d;
+  --accent-bright: #8fb0bc;  /* brighter teal for the award badge */
   --accent-warm: #907564;
 }
 
@@ -23,7 +24,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 300;
+  font-weight: 400;          /* up from 300 — steadier body text on black */
   line-height: 1.85;
   font-size: 1.25rem;
   min-height: 100vh;
@@ -41,9 +42,16 @@ section {
   padding: 5rem 0;
 }
 
-section:not(.hero) {
+/* Reveal-on-scroll: applied by JS so no-JS users see everything immediately */
+.js-reveal {
   opacity: 0;
-  animation: fadeIn 1.5s ease 3.5s forwards;
+  transform: translateY(14px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.js-reveal.visible {
+  opacity: 1;
+  transform: none;
 }
 
 /* --- HERO --- */
@@ -66,7 +74,7 @@ section:not(.hero) {
   color: var(--text-bright);
   margin-bottom: 1.5rem;
   opacity: 0;
-  animation: fadeIn 1.8s ease 0.4s forwards;
+  animation: fadeIn 1.1s ease 0.1s forwards;
 }
 
 .hero .subtitle {
@@ -76,20 +84,34 @@ section:not(.hero) {
   letter-spacing: 0.2em;
   color: var(--text-dim);
   text-transform: uppercase;
-  margin-bottom: 0.4rem;
+  margin-bottom: 1rem;
   opacity: 0;
-  animation: fadeIn 1.5s ease 1.1s forwards;
+  animation: fadeIn 1s ease 0.4s forwards;
 }
 
+/* Award: brighter, flanked by hairlines — a seal, not a box */
 .hero .prize {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-weight: 300;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  color: var(--accent);
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.13em;
+  color: var(--accent-bright);
   margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeIn 1.5s ease 1.4s both;
+  animation: fadeIn 1s ease 0.6s both;
+}
+
+.hero .prize::before,
+.hero .prize::after {
+  content: "";
+  flex: none;
+  width: 26px;
+  height: 1px;
+  background: rgba(143, 176, 188, 0.4);
 }
 
 .hero .tagline {
@@ -98,27 +120,34 @@ section:not(.hero) {
   color: var(--accent-warm);
   max-width: 480px;
   opacity: 0;
-  animation: fadeIn 1.5s ease 1.8s forwards;
+  animation: fadeIn 1s ease 0.8s forwards;
 }
 
 
-/* --- PLAY LINK --- */
+/* --- PLAY LINK (refined underlined invitation, not a box) --- */
 
 .play-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-weight: 300;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
   text-decoration: none;
-  margin-top: 1.25rem;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(143, 176, 188, 0.35);
+  margin-top: 2rem;
   opacity: 0;
-  animation: fadeIn 1.5s ease 3.2s forwards;
-  transition: color 0.3s ease;
+  animation: fadeIn 1s ease 1.3s forwards;
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .play-link:hover {
-  color: var(--text);
+  color: var(--text-bright);
+  border-color: var(--text);
 }
 
 /* --- HERO SIGNUP --- */
@@ -132,14 +161,14 @@ section:not(.hero) {
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   opacity: 0;
-  animation: fadeIn 1.5s ease 2.5s forwards;
+  animation: fadeIn 1s ease 1.0s forwards;
 }
 
 .hero-signup {
   display: flex;
   margin-top: 0;
   opacity: 0;
-  animation: fadeIn 1.5s ease 2.5s forwards;
+  animation: fadeIn 1s ease 1.0s forwards;
 }
 
 .hero-signup input[type="email"] {
@@ -201,7 +230,7 @@ section:not(.hero) {
   text-decoration: none;
   color: var(--text-dim);
   opacity: 0;
-  animation: fadeIn 1.5s ease 3.9s forwards, pulse 5s ease 5.5s infinite;
+  animation: fadeIn 1s ease 1.6s forwards, pulse 5s ease 3s infinite;
   transition: color 0.3s ease;
 }
 
@@ -215,6 +244,20 @@ section:not(.hero) {
   font-size: 0.8rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+/* --- VISUALLY HIDDEN (accessible form labels) --- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* --- ABOUT --- */
@@ -353,8 +396,6 @@ section:not(.hero) {
 footer {
   padding: 3rem 0;
   border-top: 1px solid rgba(127, 122, 114, 0.4);
-  opacity: 0;
-  animation: fadeIn 1.5s ease 3.5s forwards;
 }
 
 footer p {
@@ -388,6 +429,26 @@ a:hover {
   50% { opacity: 0.7; }
 }
 
+/* --- REDUCED MOTION --- */
+
+@media (prefers-reduced-motion: reduce) {
+  * , *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero h1, .hero .subtitle, .hero .prize, .hero .tagline,
+  .hero-signup-label, .hero-signup, .play-link, .scroll-cue {
+    opacity: 1 !important;
+  }
+  .js-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* --- RESPONSIVE --- */
 
 @media (max-width: 600px) {
@@ -397,6 +458,17 @@ a:hover {
 
   .hero .tagline {
     font-size: 1.25rem;
+  }
+
+  .hero .prize {
+    gap: 0;
+    font-size: 0.7rem;
+    max-width: 300px;
+  }
+
+  .hero .prize::before,
+  .hero .prize::after {
+    display: none;
   }
 
   .hero {

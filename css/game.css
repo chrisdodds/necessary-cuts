@@ -142,8 +142,8 @@ html, body {
 
 .choice {
   background: transparent;
-  border: 1px solid var(--text-dim);
-  color: var(--text-dim);
+  border: 1px solid rgba(200, 196, 188, 0.35);
+  color: #b0aba2;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.95rem;
   font-weight: 300;
@@ -166,6 +166,13 @@ html, body {
 
 .choice:active {
   background: rgba(200, 196, 188, 0.06);
+}
+
+.choice:focus-visible {
+  outline: none;
+  border-color: var(--text-bright);
+  color: var(--text-bright);
+  box-shadow: 0 0 0 1px rgba(232, 228, 220, 0.45);
 }
 
 .choice.tapped {
